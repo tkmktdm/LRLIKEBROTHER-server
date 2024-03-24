@@ -1,0 +1,10 @@
+name: Laravel
+
+on: push
+
+jobs:
+  test:
+    name: push-test
+    runs-on: ubuntu-latest
+    steps:
+      

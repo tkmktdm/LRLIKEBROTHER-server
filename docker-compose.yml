@@ -19,7 +19,7 @@ services:
             context: ./.manifest/php
         ports:
             - 9000:9000
-            - 5173:5173
+            # - 5173:5173
         volumes:
             - .:/app
             - ./.manifest/php/php.ini:/usr/local/etc/php/php.ini
@@ -38,15 +38,19 @@ services:
         volumes:
             - ./.manifest/db/data:/var/lib/mysql
         ports:
-            - "3306:3306"
+            - 33066:3306
+            # - 33066:33066
         environment:
-            DB_CONNECTION: mysql
-            DB_DATABASE: lr_db
-            DB_HOST: lr
-            DB_USERNAME: root
-            DB_PASSWORD: password
-            DB_ROOT_PASSWORD: password
-            TZ: Asia/Tokyo
+            - "MYSQL_DATABASE=lr_db"
+            - "MYSQL_USER=mysql"
+            - "MYSQL_ROOT_PASSWORD=root"
+            # DB_CONNECTION: mysql
+            # DB_DATABASE: lr_db
+            # DB_HOST: lr
+            # DB_USERNAME: root
+            # DB_PASSWORD: password
+            # DB_ROOT_PASSWORD: password
+            # TZ: Asia/Tokyo
 
     redis:
         container_name: redis
