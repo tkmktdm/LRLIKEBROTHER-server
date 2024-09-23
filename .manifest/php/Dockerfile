@@ -6,12 +6,20 @@ COPY php.ini /usr/local/etc/php/
 EXPOSE 5173
 
 RUN set -x \
-  && apt-get update \
-  && apt-get install -y git libicu-dev libpng-dev libzip-dev libonig-dev wget zip unzip vim \
+  && apt-get update && apt-get install -y \
+    git \
+    libicu-dev \
+    libpng-dev \
+    libzip-dev \
+    libonig-dev \
+    wget \
+    zip \
+    unzip \
+    vim \
   && git clone https://github.com/phpredis/phpredis.git /usr/src/php/ext/redis \
-  && docker-php-ext-install bcmath exif gd intl pdo_mysql sockets zip opcache redis
-
-RUN pecl install xdebug && docker-php-ext-enable xdebug
+  && docker-php-ext-install bcmath exif gd intl pdo_mysql sockets zip opcache redis \
+  && pecl install xdebug && docker-php-ext-enable xdebug \
+  && rm -rf /var/lib/apt/lists/*
 
 # Composer install
 ENV COMPOSER_ALLOW_SUPERUSER 1

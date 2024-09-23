@@ -44,6 +44,7 @@ services:
             - "MYSQL_DATABASE=lr_db"
             - "MYSQL_USER=mysql"
             - "MYSQL_ROOT_PASSWORD=root"
+            - "MYSQL_PASSWORD=root"
             # DB_CONNECTION: mysql
             # DB_DATABASE: lr_db
             # DB_HOST: lr
