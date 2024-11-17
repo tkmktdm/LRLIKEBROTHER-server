@@ -34,4 +34,13 @@ ENV PATH="/root/.nvm/versions/node/v${NODE_VERSION}/bin/:${PATH}"
 
 # RUN chown -R www-data:www-data /server/storage
 
+RUN mkdir -p /app/storage /app/bootstrap/cache \
+  && chown -R www-data:www-data /app/storage /app/bootstrap/cache \
+  && chmod -R 775 /app/storage /app/bootstrap/cache
+
 WORKDIR /app
+
+ADD . /server/storage
+
+RUN chown -R www-data:www-data /server/storage
+RUN chown -R www-data:www-data bootstrap/cache
