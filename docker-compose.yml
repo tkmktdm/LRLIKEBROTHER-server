@@ -24,8 +24,10 @@ services:
             - .:/app
             - ./.manifest/php/php.ini:/usr/local/etc/php/php.ini
             - /node_modules
+            #- ./storage:/app/storage
+            #- ./bootstrap/cache:/app/bootstrap/cache
             - /vendor
-        tty: true
+        #tty: true
         depends_on:
             - db
             - redis
