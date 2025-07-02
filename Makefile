@@ -14,16 +14,19 @@
 # 	docker-compose run app rails db:create
 
 build:
-	docker-compose build
+	docker compose build
 
 up:
-	docker-compose up -d
+	docker compose up -d
 
 stop:
-	docker-compose stop
+	docker compose stop
 
 down:
-	docker-compose down
+	docker compose down
 
 bash:
-	docker-compose exec php bash
+	docker compose exec php bash
+
+dbbash:
+	docker compose exec db bash
