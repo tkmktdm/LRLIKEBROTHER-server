@@ -11,5 +11,19 @@ class AiTalk extends Model
 {
     use HasApiTokens, HasFactory, Notifiable;
 
+    protected $fillable = [
+        'message',
+        'send_flg',
+        'ai_id',
+        'talk_id',
+    ];
+
+    protected $casts = [
+        'message' => 'string',
+        'send_flg' => 'string',
+        'ai_id' => 'string',
+        'talk_id' => 'string',
+    ];
+
     // protected $fillable = []
 }

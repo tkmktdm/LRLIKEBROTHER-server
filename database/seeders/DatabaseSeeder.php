@@ -18,5 +18,12 @@ class DatabaseSeeder extends Seeder
             'name' => 'Test User',
             'email' => 'test@example.com',
         ]);
+        \App\Models\Task::factory(5)->create();
+        // \App\Models\Task::factory(5)->create([
+        //     "title" => "タスクのタイトル",
+        //     "notes" => "説明",
+        //     "isComplete" => false,
+        //     "user_id" => User::factory(),
+        // ]);
     }
 }

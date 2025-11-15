@@ -30,3 +30,9 @@ bash:
 
 dbbash:
 	docker compose exec db bash
+
+migrate:
+	docker compose exec php php artisan migrate
+
+fresh:
+	docker compose exec php php artisan migrate:fresh --seed

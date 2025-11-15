@@ -1,9 +1,11 @@
 <?php
 
+use App\Http\Controllers\AiTalkController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\RegisterController;
+use App\Http\Controllers\TaskController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\TopController;
 
@@ -51,6 +53,18 @@ Route::middleware('auth:sanctum')->group(function () {
     // TokeAI(gemini)
     Route::prefix('aitalk')->group(function () {
         Route::get('/', [UserController::class, 'index'])->name('aitalk');
+        Route::post('/chat', [AiTalkController::class, 'allResponseTalkEndWait'])->name('aitalk_allRes');
+        Route::get('/genelate', [AiTalkController::class, 'generateTalk'])->name('aitalk_generate');
+    });
+
+    // tasks
+    Route::prefix('tasks')->group(function () {
+        Route::get('/', [TaskController::class, 'index'])->name('tasks');
+        // Route::post('/{tasks}', [TaskController::class, 'update'])->name('tasks_update');
+        Route::post('/', [TaskController::class, 'store'])->name('tasks_store');
+        Route::post('/{task}', [TaskController::class, 'update'])->name('tasks_update');
+        Route::delete('/{task}', [TaskController::class, 'destroy'])->name('tasks_delete');
+        // Route::post('/{task}', [TaskController::class, 'update'])->name('tasks_update');
     });
 
     // logout

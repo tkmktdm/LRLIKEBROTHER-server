@@ -12,6 +12,8 @@ services:
             - ./:/app
         depends_on:
             - php
+        networks:
+            - shared-network
 
     php:
         container_name: lr_php
@@ -32,6 +34,8 @@ services:
             - db
             - redis
             - minio
+        networks:
+            - shared-network
 
     db:
         container_name: lr_db
@@ -50,12 +54,16 @@ services:
             DB_ROOT_PASSWORD: password
             MYSQL_ROOT_PASSWORD: password
             TZ: Asia/Tokyo
+        networks:
+            - shared-network
 
     redis:
         container_name: redis
         image: redis:6.0.5
         ports:
             - 6379:6379
+        networks:
+            - shared-network
 
     minio:
         container_name: lr_minio
@@ -68,15 +76,23 @@ services:
             MINIO_SECRET_KEY: secret_key
             MINIO_DEFAULT_BUCKETS: uploads
         command: "server /export --address :9999 --console-address :9001"
+        networks:
+            - shared-network
 
-    # ER図作成したい時以外は一旦コメントアウトしておく
-    # schemaspy:
-    #   container_name: lr_schemaspy
-    #   build:
-    #     context: .docker/schemaspy
-    #   volumes:
-    #     - ./server/schemaspy/output:/output
-    #   depends_on:
-    #     - db
-    #   environment:
-    #     SCHEMASPY_OUTPUT: /output
+networks:
+    shared-network:
+        external: true
+        driver: bridge
+
+
+        # ER図作成したい時以外は一旦コメントアウトしておく
+        # schemaspy:
+        #   container_name: lr_schemaspy
+        #   build:
+        #     context: .docker/schemaspy
+        #   volumes:
+        #     - ./server/schemaspy/output:/output
+        #   depends_on:
+        #     - db
+        #   environment:
+        #     SCHEMASPY_OUTPUT: /output
