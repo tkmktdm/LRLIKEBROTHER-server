@@ -18,9 +18,9 @@ class TaskFactory extends Factory
     public function definition(): array
     {
         return [
-             "title" => "タスクのタイトル",
+            "title" => "タスクのタイトル",
             "notes" => "説明",
-            "isComplete" => false,
+            "status" => 0,
             "user_id" => User::factory(),
         ];
     }

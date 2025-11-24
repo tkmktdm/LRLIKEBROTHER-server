@@ -22,7 +22,7 @@ class DatabaseSeeder extends Seeder
         // \App\Models\Task::factory(5)->create([
         //     "title" => "タスクのタイトル",
         //     "notes" => "説明",
-        //     "isComplete" => false,
+        //     "status" => 0,
         //     "user_id" => User::factory(),
         // ]);
     }

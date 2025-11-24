@@ -15,8 +15,15 @@ return new class extends Migration
             $table->id();
             $table->string('title');
             $table->string('notes')->nullable();
-            $table->boolean('isComplete')->FALSE;
-            $table->foreignId('user_id')->constrained(indexName: "user_id");
+            $table->integer('status');
+            $table->integer('score');
+            $table->integer('sort_order');
+            $table->integer('priority');
+            $table->integer('start_date');
+            $table->integer('end_date');
+            $table->integer('target_date');
+            $table->foreignId('user_id');
+            // $table->foreignId('category_id');
             $table->timestamps();
         });
     }

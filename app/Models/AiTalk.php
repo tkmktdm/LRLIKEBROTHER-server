@@ -13,16 +13,19 @@ class AiTalk extends Model
 
     protected $fillable = [
         'message',
-        'send_flg',
-        'ai_id',
-        'talk_id',
+        'user_flag',
+        'ai_main_id',
+        'user_id',
+        'current_talk_id',
+        // 'talk_id',
     ];
 
     protected $casts = [
         'message' => 'string',
-        'send_flg' => 'string',
-        'ai_id' => 'string',
-        'talk_id' => 'string',
+        'user_flag' => 'string',
+        'ai_main_id' => 'string',
+        'user_id' => 'string',
+        'current_talk_id' => 'string',
     ];
 
     // protected $fillable = []

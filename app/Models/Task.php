@@ -12,14 +12,29 @@ class Task extends Model
     protected $fillable = [
         'title',
         'notes',
-        'isComplete',
+        'status',
+        'score',
+        'sort_order',
+        'priority',
+        'start_date',
+        'end_date',
+        'target_date',
         'user_id',
+        // 'category_id',
     ];
 
     protected $casts = [
         'title' => "string",
         'notes' => "string",
-        'isComplete' => "boolean",
+        'status' => "integer",
+        'score' => "integer",
+        'sort_order' => "integer",
+        'priority' => "integer",
+        'start_date' => "date",
+        'end_date' => "date",
+        'target_date' => "date",
+
         'user_id' => "integer",
+        // 'category_id' => "integer",
     ];
 }

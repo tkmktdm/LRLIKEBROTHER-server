@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('ai_talks', function (Blueprint $table) {
             $table->id();
+            $table->
             $table->timestamps();
         });
     }
