@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\AiTalkHistory;
 use Illuminate\Http\Request;
 
 class AiTalkHistoryController extends Controller
@@ -12,7 +13,8 @@ class AiTalkHistoryController extends Controller
      */
     public function index()
     {
-        //
+        $tasks = json_encode(AiTalkHistory::orderBy("updated_at", "desc")->get());
+        return $tasks;
     }
 
     /**
@@ -28,7 +30,8 @@ class AiTalkHistoryController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $tasks = json_encode(AiTalkHistory::orderBy("updated_at", "desc")->get($id));
+        return $tasks;
     }
 
     /**

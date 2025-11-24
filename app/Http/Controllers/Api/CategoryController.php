@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Models\Category;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class CategoryController extends Controller
 {
@@ -12,7 +14,8 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        //
+        $categories = json_encode(Category::orderBy("updated_at", "desc")->get());
+        return $categories;
     }
 
     /**
@@ -26,9 +29,10 @@ class CategoryController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(Request $request, Category $categories)
     {
-        //
+        $categories = Category::create($request->all());
+        return response()->json($categories);
     }
 
     /**
@@ -50,16 +54,18 @@ class CategoryController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Category $categories)
     {
-        //
+        Log::info($request);
+        $categories->update($request->all());
+        return response()->json($categories);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Category $categories)
     {
-        //
+        return $categories->delete();
     }
 }

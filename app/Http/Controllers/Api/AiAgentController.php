@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\AiAgent;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class AiAgentController extends Controller
 {
@@ -12,7 +14,8 @@ class AiAgentController extends Controller
      */
     public function index()
     {
-        //
+        $aiAgents = json_encode(AiAgent::orderBy("updated_at", "desc")->get());
+        return $aiAgents;
     }
 
     /**
@@ -26,9 +29,10 @@ class AiAgentController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(Request $request, AiAgent $aiAgents)
     {
-        //
+        $aiAgents = AiAgent::create($request->all());
+        return response()->json($aiAgents);
     }
 
     /**
@@ -50,9 +54,11 @@ class AiAgentController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, AiAgent $aiAgents)
     {
-        //
+        Log::info($request);
+        $aiAgents->update($request->all());
+        return response()->json($aiAgents);
     }
 
     /**
