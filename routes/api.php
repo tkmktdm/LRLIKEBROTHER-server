@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AiTalkController;
+use App\Http\Controllers\Api\AiTalkHistoryController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
@@ -8,6 +9,9 @@ use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\TopController;
+
+use App\Http\Controllers\Api\CategoryController;
+use App\Http\Controllers\Api\TaskController as ApiTaskController;
 
 /*
 |--------------------------------------------------------------------------
@@ -67,11 +71,22 @@ Route::middleware('auth:sanctum')->group(function () {
         // Route::post('/{task}', [TaskController::class, 'update'])->name('tasks_update');
     });
 
+    // 主機能
+    // カテゴリー
+    Route::apiResource('categories', CategoryController::class);
+    // タスク
+    Route::apiResource('tasks', ApiTaskController::class);
+    // AIエージェント
+    Route::apiResource('ai_agents', CategoryController::class);
+    // AIトーク履歴
+    Route::apiResource('ai_talks', AiTalkHistoryController::class);
+
+
     // logout
     Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 });
 // Route::middleware('auth:sanctum')->post('/logout', [AuthController::class, 'logout']);
 
 Route::get('/aa', function () {
-    return [70,30];
+    return [70, 30];
 });

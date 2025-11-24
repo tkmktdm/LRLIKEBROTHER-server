@@ -20,7 +20,7 @@ class Task extends Model
         'end_date',
         'target_date',
         'user_id',
-        // 'category_id',
+        'category_id',
     ];
 
     protected $casts = [
@@ -35,6 +35,16 @@ class Task extends Model
         'target_date' => "date",
 
         'user_id' => "integer",
-        // 'category_id' => "integer",
+        'category_id' => "integer",
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
+    }
 }
