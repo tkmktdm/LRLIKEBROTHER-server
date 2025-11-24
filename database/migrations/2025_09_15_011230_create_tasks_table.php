@@ -15,15 +15,15 @@ return new class extends Migration
             $table->id();
             $table->string('title');
             $table->string('notes')->nullable();
-            $table->integer('status');
-            $table->integer('score');
-            $table->integer('sort_order');
-            $table->integer('priority');
-            $table->integer('start_date');
-            $table->integer('end_date');
-            $table->integer('target_date');
+            $table->integer('status')->default(0);
+            $table->integer('score')->nullable();
+            $table->integer('sort_order')->default(0);
+            $table->integer('priority')->nullable();
+            $table->integer('start_date')->nullable();
+            $table->integer('end_date')->nullable();
+            $table->integer('target_date')->nullable();
             $table->foreignId('user_id');
-            // $table->foreignId('category_id');
+            $table->foreignId('category_id');
             $table->timestamps();
         });
     }

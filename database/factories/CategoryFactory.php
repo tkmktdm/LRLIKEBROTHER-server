@@ -4,12 +4,11 @@ namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 use App\Models\User;
-use App\Models\Category;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\AiTalk>
  */
-class TaskFactory extends Factory
+class CategoryFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -19,10 +18,9 @@ class TaskFactory extends Factory
     public function definition(): array
     {
         return [
-            "title" => "タスクのタイトル",
-            "notes" => "説明",
-            "status" => 0,
-            "category_id" => Category::factory(),
+            "name" => $this->faker->colorName(),
+            "sort_order" => 0,
+            "color" => "",
             "user_id" => User::factory(),
         ];
     }

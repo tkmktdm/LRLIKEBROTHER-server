@@ -11,8 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('ai_talks', function (Blueprint $table) {
+        Schema::create('ai_agents', function (Blueprint $table) {
             $table->id();
+            $table->string('name');
+            $table->string('description');
+            $table->string('version');
+            $table->boolean('is_active');
+            $table->string('token');
+            $table->foreignId('user_id');
             $table->timestamps();
         });
     }
@@ -22,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('ai_talks');
+        Schema::dropIfExists('ai_agents');
     }
 };
