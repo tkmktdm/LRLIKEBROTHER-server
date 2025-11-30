@@ -4,11 +4,8 @@ namespace App\Http\Controllers\Api;
 
 use App\Models\Category;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\DeleteCategoryRequest;
 use App\Http\Requests\StoreCategoryRequest;
 use App\Http\Requests\UpdateCategoryRequest;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
 
 class CategoryController extends Controller
 {
@@ -34,7 +31,6 @@ class CategoryController extends Controller
             return response()->json(["message" => "Forbidden"], 403);
         }
         $category->update($validated);
-
         return response()->json($category);
     }
 
