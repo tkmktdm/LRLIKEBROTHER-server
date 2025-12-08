@@ -23,7 +23,6 @@ class AiTalkHistory extends Model
         'message' => 'string',
         'emotion_data' => 'string',
         'select_speaker' => 'integer',
-
         'user_id' => 'integer',
         'ai_agent_id' => 'integer',
         'task_id' => 'integer',

@@ -3,9 +3,9 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreAiAgentRequest;
+use App\Http\Requests\UpdateAiAgentRequest;
 use App\Models\AiAgent;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
 
 class AiAgentController extends Controller
 {
@@ -17,55 +17,33 @@ class AiAgentController extends Controller
         $aiAgents = json_encode(AiAgent::orderBy("updated_at", "desc")->get());
         return $aiAgents;
     }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function store(StoreAiAgentRequest $request, AiAgent $aiAgents)
     {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request, AiAgent $aiAgents)
-    {
-        $aiAgents = AiAgent::create($request->all());
+        $validated = $request->validated();
+        $validated["user_id"] = auth()->id();
+        $aiAgents = AiAgent::create($validated);
         return response()->json($aiAgents);
     }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+    public function update(UpdateAiAgentRequest $request, AiAgent $aiAgents)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, AiAgent $aiAgents)
-    {
-        Log::info($request);
-        $aiAgents->update($request->all());
+        $validated = $request->validated();
+        $validated["user_id"] = auth()->id();
+        if ($aiAgents->user_id !== auth()->id()) {
+            return response()->json(["message" => "Forbidden"], 403);
+        }
+        $aiAgents->update($validated);
         return response()->json($aiAgents);
     }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
+    public function destroy(AiAgent $aiAgents)
     {
-        //
+        if ($aiAgents->user_id !== auth()->id()) {
+            return response()->json(["message" => "Forbidden"], 403);
+        }
+        $result = $aiAgents->delete();
+        return response()->json($result);
     }
+
+    public function create() {}
+    public function show(string $id) {}
+    public function edit(string $id) {}
 }
