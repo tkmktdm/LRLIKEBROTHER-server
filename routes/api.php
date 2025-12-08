@@ -58,7 +58,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::prefix('aitalk')->group(function () {
         Route::get('/', [UserController::class, 'index'])->name('aitalk');
         Route::post('/chat', [AiTalkController::class, 'allResponseTalkEndWait'])->name('aitalk_allRes');
-        Route::get('/genelate', [AiTalkController::class, 'generateTalk'])->name('aitalk_generate');
+        Route::get('/genelate', [AiTalkController::class, 'geminiGenerateTalk'])->name('geminiGenerateTalk');
+        // Route::get('/genelate', [AiTalkController::class, 'generateTalk'])->name('aitalk_generate');
     });
 
     // tasks
