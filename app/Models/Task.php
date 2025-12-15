@@ -30,9 +30,9 @@ class Task extends Model
         'score' => "integer",
         'sort_order' => "integer",
         'priority' => "integer",
-        'start_date' => "date",
-        'end_date' => "date",
-        'target_date' => "date",
+        'start_date' => "datetime",
+        'end_date' => "datetime",
+        'target_date' => "datetime",
 
         'user_id' => "integer",
         'category_id' => "integer",

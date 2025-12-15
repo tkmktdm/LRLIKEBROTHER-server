@@ -64,7 +64,7 @@ class TaskController extends Controller
         Log::info($request);
         // $task->touch();
         $task->update($request->all());
-        return json_encode($task);
+        return response()->json($task);
     }
 
     /**

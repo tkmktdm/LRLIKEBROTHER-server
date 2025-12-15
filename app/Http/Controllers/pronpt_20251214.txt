@@ -62,7 +62,7 @@ PROMPT
 
 これからユーザーと会話を行った上で、
 会話内容に対する自然な返答と、
-カテゴリー + タスク一覧のJSONを同時に出力してください。
+タスクや課題作成をユーザーに頼まれた際に、カテゴリー + タスク一覧のJSONを同時に出力してください。
 
 以下の出力フォーマットを絶対に守ってください：
 
@@ -145,7 +145,7 @@ PROMPT
     // $message = $request->message;
     $message = '私はLaravelとTypescriptを使うバックエンドエンジニアです。技術力が低いので勉強したいです。基礎的なものから進めたいのですが、毎日達成できる課題を出してください。';
     $response = $chat->sendMessage($message);
-    $text = $response->text();
+    // $text = $result->text();
     // return response()->json([
     //   'text' => $text,
     // ]);
@@ -156,49 +156,35 @@ PROMPT
     // ##################################
     // $responseJson = Storage::get('response.json');
     // $response = json_decode($responseJson, true);
-    // $text = $response['text'] ?? null;
+    $text = $response['text'] ?? null;
     if ($text === null) {
       throw new \Exception('text がないよ！');
     }
-    Log::debug("text");
-    Log::debug($text);
-
-    // CONVERSATION 抜き出し
-    preg_match('/<CONVERSATION>\s*(.*?)\s*<\/CONVERSATION>/s', $text, $conversationMatches);
-    if (!isset($conversationMatches[1])) {
-      throw new \Exception("CONVERSATION が見つからないよ！");
-    }
-    $conversation = trim($conversationMatches[1]);
-    Log::debug($conversation);
-    // 会話履歴を保存する
-    if ($conversation === null) {
-      Log::debug("gemini not create talk");
-      return false;
-    }
-
-    Log::debug("AiTalkHistoryService saveMessage");
-    $talkHistoryService = new AiTalkHistoryService();
-    // $message, $userId, $aiAgentId, $flg
-    $talkHistoryService->saveMessage($message, $userId, $aiAgentId, Role::USER);
-    $talkHistoryService->saveMessage($conversation, $userId, $aiAgentId, Role::MODEL);
-
 
     // JSON_OUTPUT を抜き出す
     preg_match('/<JSON_OUTPUT>\s*(\{.*\})\s*<\/JSON_OUTPUT>/s', $text, $matches);
     if (!isset($matches[1])) {
       throw new \Exception("JSON_OUTPUT が見つからないよ！");
     }
+
+    // 会話履歴を保存する
+    $talkData = json_decode($matches[1], true);
+    if ($talkData === null) {
+      throw new \Exception('JSONデコード失敗！');
+    }
+    $talkHistoryService = new AiTalkHistoryService();
+    // $message, $userId, $aiAgentId, $flg
+    $talkHistoryService->saveMessage($message, $userId, $aiAgentId, Role::USER);
+    $talkHistoryService->saveMessage($text, $userId, $aiAgentId, Role::MODEL);
+
     // ここは encode しない！！
     $taskData = json_decode($matches[1], true);
     if ($taskData === null) {
-      Log::debug("gemini not create category & tasks");
-      return false;
-      // throw new \Exception('JSONデコード失敗！');
+      throw new \Exception('JSONデコード失敗！');
     }
     // return $taskData["category"];
     // return $taskData["tasks"];
 
-    Log::debug("AiTalkService formatAiTalkData");
     $taskService = new AiTalkService();
     $result = $taskService->formatAiTalkData($taskData, $userId);
     return $result;

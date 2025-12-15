@@ -2,64 +2,46 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Models\Task;
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use App\Http\Requests\StoreTaskRequest;
+use App\Http\Requests\UpdateTaskRequest;
 
 class TaskController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        //
+        $tasks = json_encode(Task::orderBy("updated_at", "desc")->get());
+        return $tasks;
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function store(StoreTaskRequest $request)
     {
-        //
+        $validated = $request->validated();
+        $validated["user_id"] = auth()->id();
+        $task = Task::create($validated);
+        return response()->json($task);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+    public function show(string $id) {}
+
+    public function update(UpdateTaskRequest $request, Task $task)
     {
-        //
+        $validated = $request->validated();
+        $validated["user_id"] = auth()->id();
+        if ($task->user_id !== auth()->id()) {
+            return response()->json(["message" => "Forbidden"], 403);
+        }
+        $task->update($validated);
+        return response()->json($task);
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+    public function destroy(Task $task)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+        if ($task->user_id !== auth()->id()) {
+            return response()->json(["message" => "Forbidden"], 403);
+        }
+        $result = $task->delete();
+        return response()->json($result);
     }
 }

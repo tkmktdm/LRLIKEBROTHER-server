@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AiTalkController;
+use App\Http\Controllers\Api\AiAgentController;
 use App\Http\Controllers\Api\AiTalkHistoryController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -57,8 +58,9 @@ Route::middleware('auth:sanctum')->group(function () {
     // TokeAI(gemini)
     Route::prefix('aitalk')->group(function () {
         Route::get('/', [UserController::class, 'index'])->name('aitalk');
-        Route::post('/chat', [AiTalkController::class, 'allResponseTalkEndWait'])->name('aitalk_allRes');
-        Route::get('/genelate', [AiTalkController::class, 'generateTalk'])->name('aitalk_generate');
+        // Route::post('/chat', [AiTalkController::class, 'allResponseTalkEndWait'])->name('aitalk_allRes');
+        Route::get('/genelate', [AiTalkController::class, 'geminiGenerateTalk'])->name('geminiGenerateTalk');
+        // Route::get('/genelate', [AiTalkController::class, 'generateTalk'])->name('aitalk_generate');
     });
 
     // tasks
@@ -77,7 +79,7 @@ Route::middleware('auth:sanctum')->group(function () {
     // タスク
     Route::apiResource('tasks', ApiTaskController::class);
     // AIエージェント
-    Route::apiResource('ai_agents', CategoryController::class);
+    Route::apiResource('ai_agents', AiAgentController::class);
     // AIトーク履歴
     Route::apiResource('ai_talks', AiTalkHistoryController::class);
 
