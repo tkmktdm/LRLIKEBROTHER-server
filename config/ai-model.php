@@ -9,6 +9,6 @@ return [
     |
     */
 
-    'gemini' => "model",
+    'gemini' => "system",
     'llm' => "system",
 ];

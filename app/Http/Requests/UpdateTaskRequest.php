@@ -29,9 +29,9 @@ class UpdateTaskRequest extends FormRequest
             'score' => ["nullable", "integer", "min:0", "max:100"],
             'sort_order' => ["nullable", "integer", "min:0"],
             'priority' => ["nullable", "integer", "min:0"],
-            'start_date' => ["nullable", "date"],
-            'end_date' => ["nullable", "date"],
-            'target_date' => ["nullable", "date"],
+            'start_date' => ["nullable", "datetime"],
+            'end_date' => ["nullable", "datetime"],
+            'target_date' => ["nullable", "datetime"],
             'category_id' => [
                 "required",
                 Rule::exists("categories", "id")->where(function ($query) {
