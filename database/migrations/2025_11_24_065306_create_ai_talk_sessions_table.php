@@ -11,16 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('ai_talk_histories', function (Blueprint $table) {
+        Schema::create('ai_talk_sessions', function (Blueprint $table) {
             $table->id();
-            $table->string('message');
-            $table->string('emotion_data')->nullable();
-            $table->integer('select_speaker')->nullable();
             $table->foreignId('user_id');
             $table->foreignId('ai_agent_id');
-            $table->foreignId('ai_talk_session_id');
-            $table->foreignId('task_id')->nullable();
-            $table->foreignId('category_id')->nullable();
             $table->timestamps();
         });
     }
@@ -30,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('ai_talk_histories');
+        Schema::dropIfExists('ai_talk_sessions');
     }
 };

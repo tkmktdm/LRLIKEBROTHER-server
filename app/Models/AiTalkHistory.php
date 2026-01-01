@@ -15,17 +15,18 @@ class AiTalkHistory extends Model
         'select_speaker',
         'user_id',
         'ai_agent_id',
-        'task_id',
-        'category_id',
+        'ai_talk_session_id',
+        // 'task_id',
+        // 'category_id',
     ];
 
     protected $casts = [
         'message' => 'string',
         'emotion_data' => 'string',
         'select_speaker' => 'integer',
-
         'user_id' => 'integer',
         'ai_agent_id' => 'integer',
+        'ai_talk_session_id' => 'integer',
         'task_id' => 'integer',
         'category_id' => 'integer',
     ];
@@ -36,6 +37,10 @@ class AiTalkHistory extends Model
     }
 
     public function ai_agent()
+    {
+        return $this->belongsTo(AiAgent::class);
+    }
+    public function ai_talk_session()
     {
         return $this->belongsTo(AiAgent::class);
     }

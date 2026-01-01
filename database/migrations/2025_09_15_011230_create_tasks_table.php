@@ -19,9 +19,9 @@ return new class extends Migration
             $table->integer('score')->nullable();
             $table->integer('sort_order')->default(0);
             $table->integer('priority')->nullable();
-            $table->integer('start_date')->nullable();
-            $table->integer('end_date')->nullable();
-            $table->integer('target_date')->nullable();
+            $table->datetime('start_date')->nullable();
+            $table->datetime('end_date')->nullable();
+            $table->datetime('target_date')->nullable();
             $table->foreignId('user_id');
             $table->foreignId('category_id');
             $table->timestamps();
