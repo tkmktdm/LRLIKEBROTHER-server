@@ -1,0 +1,104 @@
+{
+    "candidates": [
+        {
+            "content": {
+                "parts": [
+                    {
+                        "text": "承知いたしました！Laravel でアプリケーション開発の基礎を学ぶための課題を 3 つ作成します。これらは毎日少しずつ進められるように、15〜30 分程度で完了できることを目指しています。\n\n",
+                        "inlineData": null,
+                        "fileData": null,
+                        "functionCall": null,
+                        "functionResponse": null,
+                        "executableCode": null,
+                        "codeExecutionResult": null,
+                        "thought": null,
+                        "thoughtSignature": "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"
+                    },
+                    {
+                        "text": null,
+                        "inlineData": null,
+                        "fileData": null,
+                        "functionCall": {
+                            "name": "create_task",
+                            "args": {
+                                "title": "Laravel 開発環境の準備とプロジェクト作成"
+                            },
+                            "id": null
+                        },
+                        "functionResponse": null,
+                        "executableCode": null,
+                        "codeExecutionResult": null,
+                        "thought": null,
+                        "thoughtSignature": null
+                    },
+                    {
+                        "text": null,
+                        "inlineData": null,
+                        "fileData": null,
+                        "functionCall": {
+                            "name": "create_task",
+                            "args": {
+                                "title": "シンプルなルーティングとビューでの「Hello Laravel!」表示"
+                            },
+                            "id": null
+                        },
+                        "functionResponse": null,
+                        "executableCode": null,
+                        "codeExecutionResult": null,
+                        "thought": null,
+                        "thoughtSignature": null
+                    },
+                    {
+                        "text": null,
+                        "inlineData": null,
+                        "fileData": null,
+                        "functionCall": {
+                            "name": "create_task",
+                            "args": {
+                                "title": "コントローラを作成し、ルーティングからコントローラを呼び出してテキストを表示"
+                            },
+                            "id": null
+                        },
+                        "functionResponse": null,
+                        "executableCode": null,
+                        "codeExecutionResult": null,
+                        "thought": null,
+                        "thoughtSignature": null
+                    }
+                ],
+                "role": "model"
+            },
+            "finishReason": "STOP",
+            "safetyRatings": [],
+            "citationMetadata": {
+                "citationSources": null
+            },
+            "index": 0,
+            "tokenCount": null,
+            "avgLogprobs": null,
+            "groundingAttributions": [],
+            "groundingMetadata": null,
+            "logprobsResult": null,
+            "urlRetrievalMetadata": null
+        }
+    ],
+    "usageMetadata": {
+        "promptTokenCount": 585,
+        "totalTokenCount": 1116,
+        "candidatesTokenCount": 123,
+        "cachedContentTokenCount": null,
+        "toolUsePromptTokenCount": null,
+        "thoughtsTokenCount": 408,
+        "promptTokensDetails": [
+            {
+                "tokenCount": 585,
+                "modality": "TEXT"
+            }
+        ],
+        "cacheTokensDetails": [],
+        "candidatesTokensDetails": [],
+        "toolUsePromptTokensDetails": []
+    },
+    "promptFeedback": null,
+    "modelVersion": "gemini-2.5-flash"
+}

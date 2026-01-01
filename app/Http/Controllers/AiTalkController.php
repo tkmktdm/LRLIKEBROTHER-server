@@ -3,8 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\AiTalk;
+use App\Models\AiTalkSession;
 use App\Services\AiTalkService;
 use App\Services\AiTalkHistoryService;
+use App\Services\AiTalkSessionService;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Log;
@@ -15,7 +18,7 @@ use Gemini\Laravel\Facades\Gemini;
 class AiTalkController extends Controller
 {
   // Gemini
-  public function geminiGenerateTalk(Request $request, AiTalkService $aiTalkService, AiTalkHistoryService $service)
+  public function geminiGenerateTalk(Request $request, AiTalkService $aiTalkService, AiTalkSessionService $aiTalkSessionService, AiTalkHistoryService $service)
   {
     // $talkHistory = AiTalkHistory::all();
     $userId = auth()->id();
@@ -23,25 +26,47 @@ class AiTalkController extends Controller
     // $taskId = $request["task_id"];
 
     Log::debug("aiAgent select");
+    Log::debug(new Carbon('now'));
     $aiAgent = $aiTalkService->getAgent($userId);
+    $aiSession = $aiTalkSessionService->get($userId, $aiAgent->id, $request->session_id ?? null);
+    // Log::debug($aiAgent);
+    // Log::debug($aiSession);
+    if ($aiSession->count() === 0) {
+      // sessionが初めてであれば、新しく開始する
+      $aiSession = $aiTalkSessionService->create($userId, $aiAgent->id);
+      if (!$aiSession) {
+        return ["status" => 501, "message" =>  "Session開始に失敗しました。"];
+      }
+    }
     $aiAgentId = $aiAgent->id;
     $aiAgentName = $aiAgent->name;
+    $aiSessionId = $aiSession->id;
     Log::debug("aiAgent select end");
+    Log::debug(new Carbon('now'));
+
     // 会話履歴を取得
-    $talkHistorys = $service->get($userId, $taskId);
+    Log::debug("talkHistorys search");
+    Log::debug(new Carbon('now'));
+    $talkHistorys = $service->get($userId, $aiAgentId, $aiSessionId, $taskId);
+    Log::debug($talkHistorys);
     // AI使用制限を確認
     if ($talkHistorys->count() !== 0) {
-      Log::debug("start");
-      Log::debug($talkHistorys);
+      // Log::debug($talkHistorys);
+      // AITalk履歴がある際に、使用可能な状態か判定する
       if ($talkHistorys[0]["geminiIsActive"] === 0) {
         return ["status" => 401, "message" =>  "Ai認証エラー"];
       }
       // 会話で使用するAIAgentをセット
       $aiAgentName = $talkHistorys[0]["geminiName"];
     }
+    Log::debug("talkHistorys search end");
+    Log::debug(new Carbon('now'));
 
     // defalut data
     Log::debug("default data set");
+
+    // TODO
+    // タスク生成時にセッションが同じ時にカテゴリーを追加しないように制御する必要がある
 
     $talks = [];
     $today = now();
@@ -127,12 +152,11 @@ PROMPT
       );
     }
     Log::debug("histories");
-    // Log::debug($talks);
-
-    // return 0;
 
     // $response = Gemini::generativeModel(model: $talkHistorys[0]["geminiName"])
     //   ->startChat(history: $histories);
+
+    return $histories;
 
     // gemini-2.5-flash
     Log::debug($aiAgentName);
@@ -159,41 +183,40 @@ PROMPT
     // $text = $response['text'] ?? null;
     if ($text === null) {
       throw new \Exception('text がないよ！');
+      return false;
     }
     Log::debug("text");
     Log::debug($text);
-
-    // CONVERSATION 抜き出し
+    // ユーザーとの会話データ（CONVERSATION 抜き出し）
     preg_match('/<CONVERSATION>\s*(.*?)\s*<\/CONVERSATION>/s', $text, $conversationMatches);
     if (!isset($conversationMatches[1])) {
       throw new \Exception("CONVERSATION が見つからないよ！");
+      return false;
     }
     $conversation = trim($conversationMatches[1]);
-    Log::debug($conversation);
-    // 会話履歴を保存する
     if ($conversation === null) {
       Log::debug("gemini not create talk");
       return false;
     }
-
+    // 会話履歴を保存する
+    // Log::debug($conversation);
     Log::debug("AiTalkHistoryService saveMessage");
     $talkHistoryService = new AiTalkHistoryService();
     // $message, $userId, $aiAgentId, $flg
-    $talkHistoryService->saveMessage($message, $userId, $aiAgentId, Role::USER);
-    $talkHistoryService->saveMessage($conversation, $userId, $aiAgentId, Role::MODEL);
+    $talkHistoryService->saveMessage($message, $userId, $aiAgentId, $aiSessionId, Role::USER);
+    $talkHistoryService->saveMessage($conversation, $userId, $aiAgentId, $aiSessionId, Role::MODEL);
 
-
-    // JSON_OUTPUT を抜き出す
+    // カテゴリーとタスクデータ（JSON_OUTPUT を抜き出す）
     preg_match('/<JSON_OUTPUT>\s*(\{.*\})\s*<\/JSON_OUTPUT>/s', $text, $matches);
     if (!isset($matches[1])) {
       throw new \Exception("JSON_OUTPUT が見つからないよ！");
+      return false;
     }
     // ここは encode しない！！
     $taskData = json_decode($matches[1], true);
     if ($taskData === null) {
       Log::debug("gemini not create category & tasks");
       return false;
-      // throw new \Exception('JSONデコード失敗！');
     }
     // return $taskData["category"];
     // return $taskData["tasks"];
