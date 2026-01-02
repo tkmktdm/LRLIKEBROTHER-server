@@ -138,12 +138,18 @@ class McpTaskController extends Controller
     public function mcpTest(Request $request)
     {
         $title = $request->input('title');
+        $userId = $request->input('userId');
+        $category = $request->input('category');
         if (!$title) {
             return response()->json(['error' => 'title is required'], 400);
         }
         $response = Http::post(
             'http://host.docker.internal:3333/tools/create_task',
-            ['title' => $title]
+            [
+                'title' => $title,
+                'userId' => $userId,
+                'category' => $category,
+            ]
         );
         return response()->json([
             'mcp_response' => $response->json(),
