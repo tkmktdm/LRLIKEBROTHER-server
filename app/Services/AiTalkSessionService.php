@@ -26,7 +26,7 @@ class AiTalkSessionService
         if ($sessionId) {
             $query["id"] = $sessionId;
         }
-        $aiSession = AiTalkSession::where($query)->first();
+        $aiSession = AiTalkSession::where($query)->get();
         return $aiSession;
     }
 

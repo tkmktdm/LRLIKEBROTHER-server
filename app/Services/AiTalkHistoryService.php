@@ -27,7 +27,6 @@ class AiTalkHistoryService
     public function get(int $userId, int $aiAgentId, int $aiSessionId, int $taskId = 0)
     {
         try {
-
             $talkHistory = AiTalkHistory::where([
                 "ai_talk_histories.user_id" => $userId,
                 "ai_talk_histories.ai_agent_id" => $aiAgentId,

@@ -27,7 +27,7 @@ class DatabaseSeeder extends Seeder
         \App\Models\Task::create([
             'title' => '青色タスク',
             // 'note' => '',
-            'category_id' => '11',
+            'category_id' => '6',
             'user_id' => '11',
         ]);
         \App\Models\AiAgent::create([

@@ -30,17 +30,21 @@ class GeminiTaskController extends Controller
         $userId = auth()->id();
         $taskId = 6;
         $aiAgent = $aiTalkService->getAgent($userId);
+
+        // AI Sessionの取得・作成
         $aiSession = $aiTalkSessionService->get($userId, $aiAgent->id, $request->session_id ?? null);
         if ($aiSession->count() === 0) {
+            // return $aiSession->first();
             // sessionが初めてであれば、新しく開始する
             $aiSession = $aiTalkSessionService->create($userId, $aiAgent->id);
             if (!$aiSession) {
                 return ["status" => 501, "message" =>  "Session開始に失敗しました。"];
             }
+        } else {
+            $aiSession = $aiSession->first();
         }
-        $aiAgentId = $aiAgent->id;
-        $aiAgentName = $aiAgent->name;
-        $aiSessionId = $aiSession->id;
+
+        // AI 認証確認
         $talkHistorys = $service->get($userId, $aiAgent->id, $aiSession->id, $taskId);
         if ($talkHistorys->count() !== 0) {
             // AITalk履歴がある際に、使用可能な状態か判定する
@@ -50,6 +54,7 @@ class GeminiTaskController extends Controller
             // 会話で使用するAIAgentをセット
             $aiAgentName = $talkHistorys[0]["geminiName"];
         }
+        // AI 会話履歴の取得
         $talks = [];
         if ($talkHistorys->count() !== 0) {
             foreach ($talkHistorys as $talkHistory) {
@@ -74,6 +79,7 @@ class GeminiTaskController extends Controller
         //             ),
         //         ];
 
+        // Geminiに送るためにデータの形を整える (talksで取得したデータを元にcontentsにデータを入れる)
         $contents = [];
         foreach ($talks as $talk) {
             $contents[] = Content::parse(
@@ -103,8 +109,12 @@ class GeminiTaskController extends Controller
                         type: DataType::STRING,
                         description: 'タスクのタイトル'
                     ),
+                    'category' => new Schema(
+                        type: DataType::STRING,
+                        description: 'カテゴリー名'
+                    ),
                 ],
-                required: ['title']
+                required: ['title', 'category']
             )
         );
 
@@ -187,6 +197,8 @@ SYS,
                 Log::debug($part->functionCall->args["title"]);
                 $functionName = $part->functionCall->name;
                 $args = $part->functionCall->args;
+                // MCPサーバーに送る際にユーザーIDとカテゴリーを付与する
+                $args["userId"] = $userId;
                 if ($functionName === 'create_task') {
                     $mcpResponse = Http::post('http://host.docker.internal:3333/tools/create_task', $args);
                     Log::debug("mcpResponse->json()");
