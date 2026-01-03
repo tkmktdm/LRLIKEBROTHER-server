@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('ai_talk_histories', function (Blueprint $table) {
             $table->id();
-            $table->string('message');
+            $table->text('message');
             $table->string('emotion_data')->nullable();
             $table->integer('select_speaker')->nullable();
             $table->foreignId('user_id');

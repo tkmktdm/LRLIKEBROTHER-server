@@ -60,7 +60,7 @@ class AiTalkHistoryService
         // return $talkHistory;
     }
 
-    public function saveMessage(string $message, $userId, $aiAgentId, $aiSessionId, $role)
+    public function saveMessage($message, $userId, $aiAgentId, $aiSessionId, $role)
     {
         try {
             $flg = $role === Role::USER ? 0 : 1;

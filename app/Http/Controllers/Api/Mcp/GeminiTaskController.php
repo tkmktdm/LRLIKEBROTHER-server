@@ -9,7 +9,7 @@ use App\Services\AiTalkHistoryService;
 use App\Services\AiTalkSessionService;
 
 use App\Http\Controllers\Controller;
-
+use Error;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
@@ -30,6 +30,7 @@ class GeminiTaskController extends Controller
         $userId = auth()->id();
         $taskId = 6;
         $aiAgent = $aiTalkService->getAgent($userId);
+        $title = $request->input('title');
 
         // AI Sessionの取得・作成
         $aiSession = $aiTalkSessionService->get($userId, $aiAgent->id, $request->session_id ?? null);
@@ -88,7 +89,7 @@ class GeminiTaskController extends Controller
             );
         }
         $contents[] = Content::parse(
-            part: $request->input('title'),
+            part: $title,
             role: Role::USER
         );
 
@@ -188,9 +189,13 @@ SYS,
             'error' => 'parts is not found'
         ], 400);
 
+        $messages = "";
         foreach ($parts as $part) {
             Log::debug("part->text");
             Log::debug($part->text);
+            if ($part->text) {
+                $messages .= $part->text . "\n";
+            }
             // functionCallがあればMCPサーバーに通信を行う
             if ($part->functionCall) {
                 Log::debug("part->functionCall");
@@ -204,6 +209,21 @@ SYS,
                     Log::debug("mcpResponse->json()");
                     Log::debug($mcpResponse->json());
                 }
+                $messages .= "【タスク作成】" . $args["title"] . "\n";
+            }
+        }
+
+        Log::debug("messages");
+        Log::debug($messages);
+
+        // ユーザーとAIの会話履歴を保存する
+        if ($messages) {
+            try {
+                $userMessageResult = $service->saveMessage($title, $userId, $aiAgent->id, $aiSession->id, 0);
+                $aiMessageResult = $service->saveMessage($messages, $userId, $aiAgent->id, $aiSession->id, 1);
+                Log::debug("message: saved");
+            } catch (Error $e) {
+                Log::error(`message: saved: $e`);
             }
         }
 
