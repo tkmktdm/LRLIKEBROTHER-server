@@ -45,8 +45,9 @@ Route::post('/register', [RegisterController::class, 'register'])->name('registe
 Route::post('/login', [AuthController::class, 'login'])->name('login');
 Route::middleware('auth:sanctum')->group(function () {
     // Route::get('/', [TopController::class, 'index'])->name('top');
-
+    
     // ユーザー
+    // curl -X GET http://localhost/api/setting/user -H "Authorization: Bearer YOUR_ACCESS_TOKEN"
     Route::prefix('setting')->group(function () {
         Route::get('/user', [UserController::class, 'user'])->name('user');
         Route::post('/user', [UserController::class, 'update'])->name('user_update');
