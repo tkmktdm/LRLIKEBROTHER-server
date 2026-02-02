@@ -1,4 +1,4 @@
-FROM mysql:8.0.28
+FROM mysql:8.0
 
 ADD my.cnf /etc/mysql/my.cnf
 
