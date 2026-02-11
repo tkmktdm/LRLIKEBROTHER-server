@@ -45,7 +45,8 @@ class User extends Authenticatable
         'name' => 'string',
         'kana' => 'string',
         'birthday' => 'string',
-        'gender' => 'string', // 0: man, 1: woman, 2: other
+        // 'gender' => 'string', // 0: man, 1: woman, 2: other
+        'gender' => 'integer', // 0: man, 1: woman, 2: other
         // 'gender' => [0, 1, 2], // 0: man, 1: woman, 2: other
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
