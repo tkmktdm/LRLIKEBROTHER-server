@@ -33,7 +33,8 @@ class UpdateTaskRequest extends FormRequest
             'end_date' => ["nullable", "datetime"],
             'target_date' => ["nullable", "datetime"],
             'category_id' => [
-                "required",
+                "nullable",
+                // "required",
                 Rule::exists("categories", "id")->where(function ($query) {
                     $query->where("user_id", auth()->id());
                 }),
