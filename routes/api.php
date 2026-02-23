@@ -45,7 +45,7 @@ Route::post('/register', [RegisterController::class, 'register'])->name('registe
 Route::post('/login', [AuthController::class, 'login'])->name('login');
 Route::middleware('auth:sanctum')->group(function () {
     // Route::get('/', [TopController::class, 'index'])->name('top');
-    
+
     // ユーザー
     // curl -X GET http://localhost/api/setting/user -H "Authorization: Bearer YOUR_ACCESS_TOKEN"
     Route::prefix('setting')->group(function () {
@@ -67,15 +67,15 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post("/mcp/gemini", [GeminiTaskController::class, "createTask"])->name("mcp_gemini_task");
     });
 
-    // tasks
-    Route::prefix('tasks')->group(function () {
-        Route::get('/', [TaskController::class, 'index'])->name('tasks');
-        // Route::post('/{tasks}', [TaskController::class, 'update'])->name('tasks_update');
-        Route::post('/', [TaskController::class, 'store'])->name('tasks_store');
-        Route::post('/{task}', [TaskController::class, 'update'])->name('tasks_update');
-        Route::delete('/{task}', [TaskController::class, 'destroy'])->name('tasks_delete');
-        // Route::post('/{task}', [TaskController::class, 'update'])->name('tasks_update');
-    });
+    // // tasks
+    // Route::prefix('tasks')->group(function () {
+    //     Route::get('/', [TaskController::class, 'index'])->name('tasks');
+    //     // Route::post('/{tasks}', [TaskController::class, 'update'])->name('tasks_update');
+    //     Route::post('/', [TaskController::class, 'store'])->name('tasks_store');
+    //     Route::post('/{task}', [TaskController::class, 'update'])->name('tasks_update');
+    //     Route::delete('/{task}', [TaskController::class, 'destroy'])->name('tasks_delete');
+    //     // Route::post('/{task}', [TaskController::class, 'update'])->name('tasks_update');
+    // });
 
     // 主機能
     // カテゴリー
