@@ -6,6 +6,7 @@ use App\Models\Task;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreTaskRequest;
 use App\Http\Requests\UpdateTaskRequest;
+use Illuminate\Support\Facades\Log;
 
 class TaskController extends Controller
 {
@@ -17,6 +18,8 @@ class TaskController extends Controller
 
     public function store(StoreTaskRequest $request)
     {
+        Log::debug("task store--------");
+        Log::debug($request);
         $validated = $request->validated();
         $validated["user_id"] = auth()->id();
         $task = Task::create($validated);
@@ -27,6 +30,8 @@ class TaskController extends Controller
 
     public function update(UpdateTaskRequest $request, Task $task)
     {
+        Log::debug("task update--------");
+        Log::debug($request);
         $validated = $request->validated();
         $validated["user_id"] = auth()->id();
         if ($task->user_id !== auth()->id()) {
