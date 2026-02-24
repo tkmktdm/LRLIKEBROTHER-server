@@ -11,7 +11,7 @@ class CategoryController extends Controller
 {
     public function index()
     {
-        $categories = json_encode(Category::orderBy("updated_at", "desc")->get());
+        $categories = json_encode(Category::orderBy("updated_at", "desc")->where("user_id", auth()->id())->get());
         return $categories;
     }
 

@@ -12,7 +12,8 @@ class TaskController extends Controller
 {
     public function index()
     {
-        $tasks = json_encode(Task::orderBy("updated_at", "desc")->get());
+        $tasks = json_encode(Task::orderBy("updated_at", "desc")->where("user_id", auth()->id())->get());
+        // $tasks = json_encode(Task::orderBy("updated_at", "desc")->get());
         return $tasks;
     }
 
