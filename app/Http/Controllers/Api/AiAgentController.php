@@ -14,7 +14,7 @@ class AiAgentController extends Controller
      */
     public function index()
     {
-        $aiAgents = json_encode(AiAgent::orderBy("updated_at", "desc")->get());
+        $aiAgents = json_encode(AiAgent::orderBy("updated_at", "desc")->where("user_id", auth()->id())->get());
         return $aiAgents;
     }
     public function store(StoreAiAgentRequest $request, AiAgent $aiAgents)

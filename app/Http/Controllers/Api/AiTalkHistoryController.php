@@ -15,7 +15,7 @@ class AiTalkHistoryController extends Controller
      */
     public function index()
     {
-        $tasks = json_encode(AiTalkHistory::orderBy("updated_at", "desc")->get());
+        $tasks = json_encode(AiTalkHistory::orderBy("updated_at", "desc")->where("user_id", auth()->id())->get());
         return $tasks;
     }
 
@@ -35,7 +35,7 @@ class AiTalkHistoryController extends Controller
      */
     public function show(string $id)
     {
-        $tasks = json_encode(AiTalkHistory::orderBy("updated_at", "desc")->get($id));
+        $tasks = json_encode(AiTalkHistory::orderBy("updated_at", "desc")->where("user_id", auth()->id())->get($id));
         return $tasks;
     }
 
