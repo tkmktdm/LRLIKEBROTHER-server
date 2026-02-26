@@ -81,6 +81,7 @@ Route::middleware('auth:sanctum')->group(function () {
     // カテゴリー
     Route::apiResource('categories', CategoryController::class);
     // タスク
+    Route::post('tasks/reorder', [ApiTaskController::class, 'reorder']);
     Route::apiResource('tasks', ApiTaskController::class);
     // AIエージェント
     Route::apiResource('ai_agents', AiAgentController::class);

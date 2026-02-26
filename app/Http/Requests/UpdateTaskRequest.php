@@ -23,7 +23,7 @@ class UpdateTaskRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'title' => ["required", "string", "max:255"],
+            'title' => ["sometimes", "required", "string", "max:255"],
             'notes' => ["nullable", "string", "max:255"],
             'status' => ["nullable", "integer", "min:0"],
             'score' => ["nullable", "integer", "min:0", "max:100"],
